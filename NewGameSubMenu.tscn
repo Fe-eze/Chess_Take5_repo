@@ -1,0 +1,110 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://NewGameSubMenu.gd" type="Script" id=1]
+
+[node name="NewGameSubMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 168.0
+margin_bottom = 130.0
+custom_constants/separation = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGameLabel" type="RichTextLabel" parent="VBoxContainer"]
+margin_right = 168.0
+margin_bottom = 15.0
+text = "New Game"
+fit_content_height = true
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+margin_top = 17.0
+margin_right = 168.0
+margin_bottom = 37.0
+text = "Back"
+
+[node name="TimerToggle" type="CheckButton" parent="VBoxContainer"]
+margin_top = 39.0
+margin_right = 168.0
+margin_bottom = 79.0
+text = "Timed Game?"
+
+[node name="TimerSettingsContainer" type="VBoxContainer" parent="VBoxContainer"]
+visible = false
+margin_top = 81.0
+margin_right = 168.0
+margin_bottom = 124.0
+
+[node name="SetTimeLabel" type="RichTextLabel" parent="VBoxContainer/TimerSettingsContainer"]
+margin_right = 168.0
+margin_bottom = 15.0
+text = "Set Time"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HourAndMinuteSettings" type="HBoxContainer" parent="VBoxContainer/TimerSettingsContainer"]
+margin_top = 19.0
+margin_right = 168.0
+margin_bottom = 43.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MinuteSetting" type="LineEdit" parent="VBoxContainer/TimerSettingsContainer/HourAndMinuteSettings"]
+margin_right = 58.0
+margin_bottom = 24.0
+text = "mm"
+
+[node name="SecondSetting" type="LineEdit" parent="VBoxContainer/TimerSettingsContainer/HourAndMinuteSettings"]
+margin_left = 62.0
+margin_right = 120.0
+margin_bottom = 24.0
+text = "ss"
+
+[node name="MMValidationLabel" type="RichTextLabel" parent="VBoxContainer/TimerSettingsContainer"]
+margin_right = 168.0
+margin_bottom = 15.0
+fit_content_height = true
+
+[node name="SSValidationLabel" type="RichTextLabel" parent="VBoxContainer/TimerSettingsContainer"]
+margin_right = 168.0
+margin_bottom = 15.0
+fit_content_height = true
+
+[node name="PlayerOptionsLabel" type="RichTextLabel" parent="VBoxContainer"]
+margin_top = 81.0
+margin_right = 168.0
+margin_bottom = 111.0
+text = "     Select Game Mode:
+    [Player 1 vs Player 2]"
+fit_content_height = true
+
+[node name="PlayerOptions" type="ItemList" parent="VBoxContainer"]
+margin_top = 113.0
+margin_right = 168.0
+margin_bottom = 122.0
+auto_height = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="ValidateButton" type="Button" parent="VBoxContainer"]
+margin_top = 124.0
+margin_right = 168.0
+margin_bottom = 144.0
+text = "Validate Game Settings"
+
+[connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="toggled" from="VBoxContainer/TimerToggle" to="." method="_on_TimerToggle_toggled"]
+[connection signal="text_changed" from="VBoxContainer/TimerSettingsContainer/HourAndMinuteSettings/MinuteSetting" to="." method="_on_MinuteSetting_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/TimerSettingsContainer/HourAndMinuteSettings/SecondSetting" to="." method="_on_SecondSetting_text_changed"]
+[connection signal="item_selected" from="VBoxContainer/PlayerOptions" to="." method="_on_PlayerOptions_item_selected"]
