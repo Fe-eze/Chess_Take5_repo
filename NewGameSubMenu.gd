@@ -77,6 +77,7 @@ func _on_SecondSetting_text_changed(new_text):
 			$VBoxContainer/TimerSettingsContainer/SSValidationLabel.self_modulate = Color( 1, 0, 0, 1 )
 			$VBoxContainer/TimerSettingsContainer/SSValidationLabel.set_text(str(SecondValidation))
 	else:
+		# failure flag, display a red status message
 		SecondValidation = "ss must be an integer!"
 		$VBoxContainer/TimerSettingsContainer/SSValidationLabel.self_modulate = Color( 1, 0, 0, 1 )
 		$VBoxContainer/TimerSettingsContainer/SSValidationLabel.set_text(str(SecondValidation))
@@ -97,55 +98,47 @@ func _on_PlayerOptions_ready():
 # first option should be register new user (which will open up the user registration dialog
 # list should be searchable
 func _on_PlayerOptions_item_selected(index):
-	# If Human v human is selected, the two textboxes that show up will load as
-	# Player1 "Human"
-	# Player2 "Human"
+	# If Human v AI is selected, the two textboxes that show up will load as:
+	# Select Player1 "Human"			Select Player 2 (AI)
+	# ** list of human players **		** list of AI players **
+	# ** list is scrollable, and each element of the list is a button containing the name of a player registered in the database **
+	# ** end of list **
 	
 	# Display the menu labels for Player 1 and Player 2 (as selected by the user)
 	$VBoxContainer/PlayerSelectorContainer/Player1SelectorLabel.set_text("SELECT PLAYER 1 [" + str(PlayerLabels[index][0]) + "]")
 	$VBoxContainer/PlayerSelectorContainer/Player2SelectorLabel.set_text("SELECT PLAYER 2 [" + str(PlayerLabels[index][1]) + "]")
 	
-	# TODO, Need to refactor this! (LOTS OF REPETITIVE CODE HERE)
-	
 	# Since it is live, delete any database that may have been generated in a previous click
 	delete_children($VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown)
 	delete_children($VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown)
 	
+	# Start by grabbing the location of the Player1 & Player2 nodes, to avoid repitition
+	var Player1Dropdown = $VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown
+	var Player2Dropdown = $VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown
+	
 	# Check what player 1 is set as (Human or AI?) and load the corresponding database
 	if PlayerLabels[index][0] == "Human":
-		for i in HumanPlayerDatabase:
-			var button = Button.new()
-			button.text = i
-			#button.connect(pressed, self, 
-			$VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown.add_child(button)
+		display_database_names(Player1Dropdown, HumanPlayerDatabase)
 	else:
-		for i in AIPlayerDatabase:
-			var button = Button.new()
-			button.text = i
-			#button.connect(pressed, self, 
-			$VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown.add_child(button)
+		display_database_names(Player1Dropdown, AIPlayerDatabase)
 	
 	# check what player 2 is set as, and load the corresponding database
 	if PlayerLabels[index][1] == "Human":
-		for i in HumanPlayerDatabase:
-			var button = Button.new()
-			button.text = i
-			#button.connect(pressed, self, 
-			$VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown.add_child(button)
+		display_database_names(Player2Dropdown, HumanPlayerDatabase)
 	else:
-		for i in AIPlayerDatabase:
-			var button = Button.new()
-			button.text = i
-			#button.connect(pressed, self, 
-			$VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown.add_child(button)
+		display_database_names(Player2Dropdown, AIPlayerDatabase)
 		
+# Helper function to help delete children as needed
 static func delete_children(node):
 	for n in node.get_children():
 		node.remove_child(n)
 		n.queue_free()
 
-#func _on_Player1SelectorDropdown_ready():
-#	index = _on_PlayerOptions_item_selected()
-#	if index[0]
-
-		
+# Helper function to loop through the player or AI database name column
+# and spit out the relevant list
+func display_database_names(Player, Database):
+	for i in Database:
+		var button = Button.new()
+		button.text = i
+		#button.connect(pressed, self, 
+		Player.add_child(button)
