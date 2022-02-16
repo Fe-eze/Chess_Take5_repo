@@ -3,21 +3,18 @@ extends Control
 const MAX_SECONDS_IN_A_MINUTE = 60
 
 # Declare member variables here. Examples:
-var ListContents = ["Human v Human", "Human v AI", "AI v AI"]
-var HumanPlayerDatabase = ["Nachi", "Deni", "Fe-eze"]# TODO change and implement proper database
+# TODO create function that does player types/ player labels generation
+var PlayerTypes = ["Human", "AI"]
+var PlayerLabels = []
+
+var HumanPlayerDatabase = ["Nachi", "Deni", "Fe-eze"] # TODO change and implement proper database
+var AIPlayerDatabase = ["Kasparovina", "Alexei", "Schultz", "Femi", "Uche"] # TODO change and implement proper database
 var isGameTimed = false
 var TurnTime = [0, 0]
-var Player1 = ""
-var Player2 = ""
 var ValidationMessage = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for ItemID in range(ListContents.size()):
-		$VBoxContainer/PlayerOptions.add_item(ListContents[ItemID],null,true)
-
-	$VBoxContainer/PlayerOptions.select(0,true)
-
 	$VBoxContainer/ValidateButton.connect("pressed",self,"ReportListItem")
 	
 
@@ -84,6 +81,15 @@ func _on_SecondSetting_text_changed(new_text):
 		$VBoxContainer/TimerSettingsContainer/SSValidationLabel.self_modulate = Color( 1, 0, 0, 1 )
 		$VBoxContainer/TimerSettingsContainer/SSValidationLabel.set_text(str(SecondValidation))
 
+# Load the Four game options into the screen
+func _on_PlayerOptions_ready():
+	# TODO remove nested for loop
+	for i in range(PlayerTypes.size()):
+		for j in range(PlayerTypes.size()):
+			PlayerLabels.append([PlayerTypes[i], PlayerTypes[j]]) # put into this array so it can be called easily later
+			$VBoxContainer/PlayerOptions.add_item(PlayerTypes[i] + " v " + PlayerTypes[j],null,true) # display p1 vs p2 as text to the menu screen
+	$VBoxContainer/PlayerOptions.select(0,true)
+
 
 # TODO implement this
 # when player has selected a game mode, 
@@ -94,11 +100,52 @@ func _on_PlayerOptions_item_selected(index):
 	# If Human v human is selected, the two textboxes that show up will load as
 	# Player1 "Human"
 	# Player2 "Human"
-	if index == ListContents[0]:
-		pass
-	elif index == ListContents[1]:
-		pass
-	elif index == ListContents[2]:
-		pass
+	
+	# Display the menu labels for Player 1 and Player 2 (as selected by the user)
+	$VBoxContainer/PlayerSelectorContainer/Player1SelectorLabel.set_text("SELECT PLAYER 1 [" + str(PlayerLabels[index][0]) + "]")
+	$VBoxContainer/PlayerSelectorContainer/Player2SelectorLabel.set_text("SELECT PLAYER 2 [" + str(PlayerLabels[index][1]) + "]")
+	
+	# TODO, Need to refactor this! (LOTS OF REPETITIVE CODE HERE)
+	
+	# Since it is live, delete any database that may have been generated in a previous click
+	delete_children($VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown)
+	delete_children($VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown)
+	
+	# Check what player 1 is set as (Human or AI?) and load the corresponding database
+	if PlayerLabels[index][0] == "Human":
+		for i in HumanPlayerDatabase:
+			var button = Button.new()
+			button.text = i
+			#button.connect(pressed, self, 
+			$VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown.add_child(button)
+	else:
+		for i in AIPlayerDatabase:
+			var button = Button.new()
+			button.text = i
+			#button.connect(pressed, self, 
+			$VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown.add_child(button)
+	
+	# check what player 2 is set as, and load the corresponding database
+	if PlayerLabels[index][1] == "Human":
+		for i in HumanPlayerDatabase:
+			var button = Button.new()
+			button.text = i
+			#button.connect(pressed, self, 
+			$VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown.add_child(button)
+	else:
+		for i in AIPlayerDatabase:
+			var button = Button.new()
+			button.text = i
+			#button.connect(pressed, self, 
+			$VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown.add_child(button)
+		
+static func delete_children(node):
+	for n in node.get_children():
+		node.remove_child(n)
+		n.queue_free()
 
+#func _on_Player1SelectorDropdown_ready():
+#	index = _on_PlayerOptions_item_selected()
+#	if index[0]
 
+		

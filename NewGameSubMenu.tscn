@@ -83,24 +83,74 @@ fit_content_height = true
 [node name="PlayerOptionsLabel" type="RichTextLabel" parent="VBoxContainer"]
 margin_top = 81.0
 margin_right = 168.0
-margin_bottom = 111.0
+margin_bottom = 141.0
 text = "     Select Game Mode:
-    [Player 1 vs Player 2]"
+    [Player 1 vs Player 2]
+	 PLAYER 1 IS WHITE
+	 WHITE GOES FIRST"
 fit_content_height = true
 
 [node name="PlayerOptions" type="ItemList" parent="VBoxContainer"]
-margin_top = 113.0
+margin_top = 143.0
 margin_right = 168.0
-margin_bottom = 122.0
+margin_bottom = 152.0
 auto_height = true
 __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="ValidateButton" type="Button" parent="VBoxContainer"]
-margin_top = 124.0
+[node name="PlayerSelectorContainer" type="GridContainer" parent="VBoxContainer"]
+margin_top = 154.0
 margin_right = 168.0
-margin_bottom = 144.0
+margin_bottom = 253.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="Player1SelectorLabel" type="RichTextLabel" parent="VBoxContainer/PlayerSelectorContainer"]
+margin_right = 82.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+fit_content_height = true
+
+[node name="Player2SelectorLabel" type="RichTextLabel" parent="VBoxContainer/PlayerSelectorContainer"]
+margin_left = 86.0
+margin_right = 168.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+fit_content_height = true
+
+[node name="Player1ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PlayerSelectorContainer"]
+margin_top = 19.0
+margin_right = 82.0
+margin_bottom = 99.0
+rect_min_size = Vector2( 0, 80 )
+size_flags_horizontal = 3
+
+[node name="Player1SelectorDropdown" type="VBoxContainer" parent="VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer"]
+margin_right = 82.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Player2ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PlayerSelectorContainer"]
+margin_left = 86.0
+margin_top = 19.0
+margin_right = 168.0
+margin_bottom = 99.0
+rect_min_size = Vector2( 0, 80 )
+
+[node name="Player2SelectorDropdown" type="VBoxContainer" parent="VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer"]
+margin_right = 82.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ValidateButton" type="Button" parent="VBoxContainer"]
+margin_top = 255.0
+margin_right = 168.0
+margin_bottom = 275.0
 text = "Validate Game Settings"
 
 [connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
@@ -108,3 +158,5 @@ text = "Validate Game Settings"
 [connection signal="text_changed" from="VBoxContainer/TimerSettingsContainer/HourAndMinuteSettings/MinuteSetting" to="." method="_on_MinuteSetting_text_changed"]
 [connection signal="text_changed" from="VBoxContainer/TimerSettingsContainer/HourAndMinuteSettings/SecondSetting" to="." method="_on_SecondSetting_text_changed"]
 [connection signal="item_selected" from="VBoxContainer/PlayerOptions" to="." method="_on_PlayerOptions_item_selected"]
+[connection signal="ready" from="VBoxContainer/PlayerOptions" to="." method="_on_PlayerOptions_ready"]
+[connection signal="ready" from="VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown" to="." method="_on_Player1SelectorDropdown_ready"]
