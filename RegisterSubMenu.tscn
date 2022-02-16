@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://RegisterSubMenu.gd" type="Script" id=1]
+
+[node name="RegisterSubMenu" type="WindowDialog"]
+visible = true
+margin_right = 48.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 300 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+popup_exclusive = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FormContainer" type="VBoxContainer" parent="."]
+margin_right = 300.0
+margin_bottom = 71.0
+rect_min_size = Vector2( 400, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RegisterLabel" type="RichTextLabel" parent="FormContainer"]
+margin_right = 400.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Register New User"
+fit_content_height = true
+
+[node name="RegistrationFormContainer" type="GridContainer" parent="FormContainer"]
+margin_top = 19.0
+margin_right = 400.0
+margin_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="UsernameLabel" type="RichTextLabel" parent="FormContainer/RegistrationFormContainer"]
+margin_right = 198.0
+margin_bottom = 24.0
+hint_tooltip = "MAX: 32 chars"
+size_flags_horizontal = 3
+text = "UserName"
+fit_content_height = true
+
+[node name="UsernameTextbox" type="LineEdit" parent="FormContainer/RegistrationFormContainer"]
+margin_left = 202.0
+margin_right = 400.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "MAX 32 Chars"
+
+[node name="RegisterButton" type="Button" parent="FormContainer"]
+margin_top = 47.0
+margin_right = 400.0
+margin_bottom = 67.0
+text = "Register"
+
+[node name="RegistrationOutputStatus" type="RichTextLabel" parent="FormContainer"]
+margin_top = 71.0
+margin_right = 400.0
+margin_bottom = 71.0

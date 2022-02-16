@@ -28,7 +28,7 @@ func _on_LearnChessButton_pressed():
 	pass
 
 func _on_OptionsButton_pressed():
-	pass
+	get_tree().change_scene("res://RegisterSubMenu.tscn")
 
 func _on_CreditsButton_pressed():
 	pass

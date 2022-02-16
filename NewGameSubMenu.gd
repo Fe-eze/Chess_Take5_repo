@@ -16,16 +16,6 @@ var ValidationMessage = ""
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$VBoxContainer/ValidateButton.connect("pressed",self,"ReportListItem")
-	
-
-func ReportListItem():
-	#var ItemNo = $VBoxContainer/PlayerOptions.get_selected_items
-
-	#The output ItemNo is a list of selected items.  Use this to select
-	#The matching component from the associated array, ItemListContent.
- 
-	#$VBoxContainer/TimerSettingsContainer/OutputLabel.set_text(str(ValidationMessage))
-	pass
 
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://MainMenu.tscn")
@@ -47,40 +37,43 @@ func _on_TimerToggle_toggled(button_pressed):
 # or if the ss section exceeds 60
 func _on_MinuteSetting_text_changed(new_text):
 	var MinuteValidation = ""
+	var MMVaidationLabel = $VBoxContainer/TimerSettingsContainer/MMValidationLabel #grab this to avoid needless repitition
+	
 	if int(new_text) != 0:
 		# input is okay, save the mm setting
 		# success flag, display a green status message
 		TurnTime[0] = new_text
 		MinuteValidation = "mm field Okay!"
-		$VBoxContainer/TimerSettingsContainer/MMValidationLabel.self_modulate = Color( 0, 1, 0, 1 )
-		$VBoxContainer/TimerSettingsContainer/MMValidationLabel.set_text(str(MinuteValidation))
+		MMVaidationLabel.self_modulate = Color( 0, 1, 0, 1 )
+		MMVaidationLabel.set_text(str(MinuteValidation))
 	else:
 		# alert user to correct this
 		# failure flag, display a red status message
 		MinuteValidation = "mm must be an integer!"
-		$VBoxContainer/TimerSettingsContainer/MMValidationLabel.self_modulate = Color( 1, 0, 0, 1 )
-		$VBoxContainer/TimerSettingsContainer/MMValidationLabel.set_text(str(MinuteValidation))
+		MMVaidationLabel.self_modulate = Color( 1, 0, 0, 1 )
+		MMVaidationLabel.set_text(str(MinuteValidation))
 
 func _on_SecondSetting_text_changed(new_text):
 	var SecondValidation = ""
+	var SSVaidationLabel = $VBoxContainer/TimerSettingsContainer/SSValidationLabel #grab this to avoid needless repitition
 	if (int(new_text) != 0):
 		if (int(new_text) < MAX_SECONDS_IN_A_MINUTE):
 			# input is okay, save the ss setting
 			# success flag, display a green status message
 			TurnTime[1] = new_text
 			SecondValidation = "ss field Okay!"
-			$VBoxContainer/TimerSettingsContainer/SSValidationLabel.self_modulate = Color( 0, 1, 0, 1 )
-			$VBoxContainer/TimerSettingsContainer/SSValidationLabel.set_text(str(SecondValidation))
+			SSVaidationLabel.self_modulate = Color( 0, 1, 0, 1 )
+			SSVaidationLabel.set_text(str(SecondValidation))
 		else:
 			# failure flag, display a red status message
 			SecondValidation = "ss must be b/w 0 & 59!"
-			$VBoxContainer/TimerSettingsContainer/SSValidationLabel.self_modulate = Color( 1, 0, 0, 1 )
-			$VBoxContainer/TimerSettingsContainer/SSValidationLabel.set_text(str(SecondValidation))
+			SSVaidationLabel.self_modulate = Color( 1, 0, 0, 1 )
+			SSVaidationLabel.set_text(str(SecondValidation))
 	else:
 		# failure flag, display a red status message
 		SecondValidation = "ss must be an integer!"
-		$VBoxContainer/TimerSettingsContainer/SSValidationLabel.self_modulate = Color( 1, 0, 0, 1 )
-		$VBoxContainer/TimerSettingsContainer/SSValidationLabel.set_text(str(SecondValidation))
+		SSVaidationLabel.self_modulate = Color( 1, 0, 0, 1 )
+		SSVaidationLabel.set_text(str(SecondValidation))
 
 # Load the Four game options into the screen
 func _on_PlayerOptions_ready():
@@ -90,7 +83,6 @@ func _on_PlayerOptions_ready():
 			PlayerLabels.append([PlayerTypes[i], PlayerTypes[j]]) # put into this array so it can be called easily later
 			$VBoxContainer/PlayerOptions.add_item(PlayerTypes[i] + " v " + PlayerTypes[j],null,true) # display p1 vs p2 as text to the menu screen
 	$VBoxContainer/PlayerOptions.select(0,true)
-
 
 # TODO implement this
 # when player has selected a game mode, 
