@@ -2,7 +2,7 @@ extends Control
 
 const MAX_SECONDS_IN_A_MINUTE = 60
 
-# Declare member variables here. Examples:
+# Declare member variables here.
 # TODO create function that does player types/ player labels generation
 var PlayerTypes = ["Human", "AI"]
 var PlayerLabels = []
@@ -100,13 +100,13 @@ func _on_PlayerOptions_item_selected(index):
 	$VBoxContainer/PlayerSelectorContainer/Player1SelectorLabel.set_text("SELECT PLAYER 1 [" + str(PlayerLabels[index][0]) + "]")
 	$VBoxContainer/PlayerSelectorContainer/Player2SelectorLabel.set_text("SELECT PLAYER 2 [" + str(PlayerLabels[index][1]) + "]")
 	
-	# Since it is live, delete any database that may have been generated in a previous click
-	delete_children($VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown)
-	delete_children($VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown)
-	
 	# Start by grabbing the location of the Player1 & Player2 nodes, to avoid repitition
 	var Player1Dropdown = $VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown
 	var Player2Dropdown = $VBoxContainer/PlayerSelectorContainer/Player2ScrollContainer/Player2SelectorDropdown
+	
+	# Since it is live, delete any database that may have been generated in a previous click
+	delete_children(Player1Dropdown)
+	delete_children(Player2Dropdown)
 	
 	# Check what player 1 is set as (Human or AI?) and load the corresponding database
 	if PlayerLabels[index][0] == "Human":
