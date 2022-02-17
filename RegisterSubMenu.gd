@@ -3,6 +3,7 @@ extends WindowDialog
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$".".set_title("Register New User") # Make text "Register New User" the dialog window title
+	#show()
 	popup_centered() # Make the window alive and center it
 
 # validate username text length
@@ -35,7 +36,7 @@ func _on_RegisterButton_pressed():
 	# if all is fine and the user has entered a valid input
 	# TODO, check username against one already in the database
 	else:
-		RegistrationSummary = "New player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + ", Fullname: " + FullnameTextNode.get_text() + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
+		RegistrationSummary = "New player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + "\nFullname: " + FullnameTextNode.get_text() + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
 		RegisterStatusNode.self_modulate = Color( 0, 1, 0, 1 )
 		
 		# disappear the register button since input is fine
@@ -83,8 +84,18 @@ func clear_textboxes():
 	$FormContainer/RegistrationFormContainer/UsernameTextbox.clear()
 	$FormContainer/RegistrationFormContainer/FullnameTextbox.clear()
 
-
 func _on_YesButtonAnother_pressed():
+	reset_RegisterSubMenu()
+
+func _on_NoButtonQuit_pressed():
+	$".".hide() # press the dialog close button
+	
+	# after hiding, reset dialog box to defaults
+	# reset_RegisterSubMenu()
+	
+func reset_RegisterSubMenu():
+	clear_textboxes() # remove items from the menu
+	
 	# Hide all confirmatory elements
 	$FormContainer/RegisterConfirmContainer/RegistrationOutputStatus.visible = false
 	$FormContainer/RegisterConfirmContainer/UserConfirmation.visible = false 
@@ -94,5 +105,5 @@ func _on_YesButtonAnother_pressed():
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
 
-func _on_NoButtonQuit_pressed():
-	$".".get_close_button().is_pressed() # press the dialog close button
+func _on_RegisterSubMenu_popup_hide():
+	reset_RegisterSubMenu()

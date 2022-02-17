@@ -1,10 +1,7 @@
 extends Control
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
+var RegisterScene = preload("res://RegisterSubMenu.tscn")
+var new_reg
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,15 +25,16 @@ func _on_LearnChessButton_pressed():
 	pass
 
 func _on_OptionsButton_pressed():
-#	get_tree().change_scene("res://RegisterSubMenu.tscn")
-	get_node("res://RegisterSubMenu.tscn/RegisterSubMenu")
-#	load.get_node(".")
+	if (new_reg == null):
+		new_reg = RegisterScene.instance()
+		add_child(new_reg)
+	
+	new_reg.popup_centered()
+	#RegisterScene.popup()
+	#get_tree().change_scene("res://RegisterSubMenu.tscn")
 
 func _on_CreditsButton_pressed():
 	pass
 
 func _on_QuitButton_pressed():
 	get_tree().quit()
-
-
-

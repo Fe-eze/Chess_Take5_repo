@@ -115,6 +115,7 @@ margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "NO"
 
+[connection signal="popup_hide" from="." to="." method="_on_RegisterSubMenu_popup_hide"]
 [connection signal="ready" from="FormContainer/RegistrationFormContainer/UsernameTextbox" to="." method="_on_UsernameTextbox_ready"]
 [connection signal="ready" from="FormContainer/RegistrationFormContainer/FullnameTextbox" to="." method="_on_FullnameTextbox_ready"]
 [connection signal="pressed" from="FormContainer/RegisterButton" to="." method="_on_RegisterButton_pressed"]
