@@ -14,3 +14,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+# When Register button is pressed,
+# Check and validate form fields
+# if valid, give green success message and open dialog popup asking to register another or not
+func _on_RegisterButton_pressed():
+	pass # Replace with function body.

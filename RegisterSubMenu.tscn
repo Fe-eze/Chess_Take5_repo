@@ -35,7 +35,7 @@ fit_content_height = true
 [node name="RegistrationFormContainer" type="GridContainer" parent="FormContainer"]
 margin_top = 19.0
 margin_right = 400.0
-margin_bottom = 43.0
+margin_bottom = 71.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
@@ -45,7 +45,7 @@ margin_right = 198.0
 margin_bottom = 24.0
 hint_tooltip = "MAX: 32 chars"
 size_flags_horizontal = 3
-text = "UserName"
+text = "User Name"
 fit_content_height = true
 
 [node name="UsernameTextbox" type="LineEdit" parent="FormContainer/RegistrationFormContainer"]
@@ -55,13 +55,32 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "MAX 32 Chars"
 
-[node name="RegisterButton" type="Button" parent="FormContainer"]
-margin_top = 47.0
+[node name="FullnameLabel" type="RichTextLabel" parent="FormContainer/RegistrationFormContainer"]
+margin_top = 28.0
+margin_right = 198.0
+margin_bottom = 52.0
+hint_tooltip = "MAX: 32 chars"
+size_flags_horizontal = 3
+text = "Full Name"
+fit_content_height = true
+
+[node name="FullNameTextbox" type="LineEdit" parent="FormContainer/RegistrationFormContainer"]
+margin_left = 202.0
+margin_top = 28.0
 margin_right = 400.0
-margin_bottom = 67.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+text = "MAX 64 Chars"
+
+[node name="RegisterButton" type="Button" parent="FormContainer"]
+margin_top = 75.0
+margin_right = 400.0
+margin_bottom = 95.0
 text = "Register"
 
 [node name="RegistrationOutputStatus" type="RichTextLabel" parent="FormContainer"]
-margin_top = 71.0
+margin_top = 99.0
 margin_right = 400.0
-margin_bottom = 71.0
+margin_bottom = 99.0
+
+[connection signal="pressed" from="FormContainer/RegisterButton" to="." method="_on_RegisterButton_pressed"]
