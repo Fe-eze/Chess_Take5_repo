@@ -3,7 +3,6 @@
 [ext_resource path="res://RegisterSubMenu.gd" type="Script" id=1]
 
 [node name="RegisterSubMenu" type="WindowDialog"]
-visible = true
 margin_right = 48.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 400, 300 )
@@ -25,17 +24,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RegisterLabel" type="RichTextLabel" parent="FormContainer"]
-margin_right = 400.0
-margin_bottom = 15.0
-size_flags_horizontal = 3
-text = "Register New User"
-fit_content_height = true
-
 [node name="RegistrationFormContainer" type="GridContainer" parent="FormContainer"]
-margin_top = 19.0
 margin_right = 400.0
-margin_bottom = 71.0
+margin_bottom = 52.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
@@ -71,15 +62,15 @@ margin_bottom = 52.0
 size_flags_horizontal = 3
 
 [node name="RegisterButton" type="Button" parent="FormContainer"]
-margin_top = 75.0
+margin_top = 56.0
 margin_right = 400.0
-margin_bottom = 95.0
+margin_bottom = 76.0
 text = "Register"
 
 [node name="RegisterConfirmContainer" type="VBoxContainer" parent="FormContainer"]
-margin_top = 99.0
+margin_top = 80.0
 margin_right = 400.0
-margin_bottom = 99.0
+margin_bottom = 80.0
 
 [node name="RegistrationOutputStatus" type="RichTextLabel" parent="FormContainer/RegisterConfirmContainer"]
 visible = false

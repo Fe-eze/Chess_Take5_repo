@@ -1,10 +1,9 @@
 extends WindowDialog
 
-# TODO Make text "Register New User" the dialog window title, then delete the richtext node RegisterLabel
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	popup_centered()
+	$".".set_title("Register New User") # Make text "Register New User" the dialog window title
+	popup_centered() # Make the window alive and center it
 
 # validate username text length
 func _on_UsernameTextbox_ready():
