@@ -79,19 +79,21 @@ func _on_NoButton_pressed():
 	# Show the register button
 	$FormContainer/RegisterButton.visible = true
 
+func _on_YesButtonAnother_pressed():
+	reset_RegisterSubMenu() # clear everything in preparation for new user registration
+
+func _on_NoButtonQuit_pressed():
+	$".".hide() # press the dialog close button
+	# after hiding, the dialog box will be reset to defaults through the popup_hide() function
+
+func _on_RegisterSubMenu_popup_hide():
+	reset_RegisterSubMenu()
+
+# ************** SNIPPET FUNCTIONS ********************
 # reusable function that clears all textboxes in the form when called
 func clear_textboxes():
 	$FormContainer/RegistrationFormContainer/UsernameTextbox.clear()
 	$FormContainer/RegistrationFormContainer/FullnameTextbox.clear()
-
-func _on_YesButtonAnother_pressed():
-	reset_RegisterSubMenu()
-
-func _on_NoButtonQuit_pressed():
-	$".".hide() # press the dialog close button
-	
-	# after hiding, reset dialog box to defaults
-	# reset_RegisterSubMenu()
 	
 func reset_RegisterSubMenu():
 	clear_textboxes() # remove items from the menu
@@ -104,6 +106,3 @@ func reset_RegisterSubMenu():
 	# Show the registration form and the register button
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
-
-func _on_RegisterSubMenu_popup_hide():
-	reset_RegisterSubMenu()
