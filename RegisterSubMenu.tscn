@@ -110,20 +110,11 @@ margin_right = 400.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
-[node name="ScoreValidator" type="RichTextLabel" parent="FormContainer"]
+[node name="NoButtonEstimateScore" type="HBoxContainer" parent="FormContainer"]
 visible = false
 margin_top = 90.0
 margin_right = 400.0
-margin_bottom = 105.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-fit_content_height = true
-
-[node name="NoButtonEstimateScore" type="HBoxContainer" parent="FormContainer"]
-visible = false
-margin_top = 118.0
-margin_right = 400.0
-margin_bottom = 148.0
+margin_bottom = 120.0
 size_flags_horizontal = 3
 
 [node name="DifficultyQuestion" type="RichTextLabel" parent="FormContainer/NoButtonEstimateScore"]
@@ -138,6 +129,16 @@ margin_left = 202.0
 margin_right = 400.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScoreValidator" type="RichTextLabel" parent="FormContainer"]
+visible = false
+margin_top = 90.0
+margin_right = 400.0
+margin_bottom = 105.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+fit_content_height = true
 
 [node name="RegisterButton" type="Button" parent="FormContainer"]
 margin_top = 90.0
@@ -200,6 +201,7 @@ text = "NO"
 [connection signal="pressed" from="FormContainer/RegistrationFormContainer/ChessScoreAnswerContainer/ChessScoreNoButton" to="." method="_on_ChessScoreNoButton_pressed"]
 [connection signal="ready" from="FormContainer/YesButtonExactScore/NumericScoreEntry" to="." method="_on_NumericScoreEntry_ready"]
 [connection signal="text_changed" from="FormContainer/YesButtonExactScore/NumericScoreEntry" to="." method="_on_NumericScoreEntry_text_changed"]
+[connection signal="ready" from="FormContainer/NoButtonEstimateScore/DifficultyList" to="." method="_on_DifficultyList_ready"]
 [connection signal="pressed" from="FormContainer/RegisterButton" to="." method="_on_RegisterButton_pressed"]
 [connection signal="pressed" from="FormContainer/RegisterConfirmContainer/UserConfirmation/YesButton" to="." method="_on_YesButton_pressed"]
 [connection signal="pressed" from="FormContainer/RegisterConfirmContainer/UserConfirmation/NoButton" to="." method="_on_NoButton_pressed"]

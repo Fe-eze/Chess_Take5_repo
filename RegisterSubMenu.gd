@@ -1,6 +1,15 @@
 extends WindowDialog
 
 const HIGHEST_POSSIBLE_CHESS_SCORE = 3000
+const DIFFICULTY_LEVELS = {
+	"Total Beginner" : "Trying to get into chess for the first time",
+	"Novice": "Knows a bit about chess but are still a beginner",
+	"Lower Intermediate" : "",
+	"Upper Intermediate" : "",
+	"Competent" : "",
+	"Expert" : "",
+	"Grandmaster" : ""
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,16 +66,12 @@ func _on_NumericScoreEntry_text_changed(new_text):
 		feedback = "Chess score must be an integer!"
 		ScoreValidator.self_modulate = Color( 1, 0, 0, 1 )
 		ScoreValidator.set_text(str(feedback))
-		
-# Total Beginner - Trying to get into chess for the first time
-# Novice - Knows a bit about chess but are still a beginner
-# Lower Intermediate
-# Upper Intermediate
-# Competent
-# Expert
-# Grandmaster
 
-
+func _on_DifficultyList_ready():
+	var DifficultyListNode = $FormContainer/NoButtonEstimateScore/DifficultyList
+	for i in DIFFICULTY_LEVELS.keys():
+		DifficultyListNode.add_item(i)
+	#DIFFICULTY_LEVELS.values()[i]
 # When Register button is pressed,
 # ask for confirmation,
 # if yes, register the user
@@ -160,5 +165,8 @@ func reset_RegisterSubMenu():
 	# Show the registration form and the register button
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
+
+
+
 
 
