@@ -128,20 +128,25 @@ func _on_RegisterButton_pressed():
 		RegisterStatusNode.self_modulate = Color( 1, 0, 0, 1 )
 
 	# if all is fine and the user has entered a valid input
-	# TODO, check username against one already in the database
+	# Check username against one already in the database
 	else:
-		RegistrationSummary = "A new player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + "\nFullname: " + FullnameTextNode.get_text() + "\nChess Score: " + String(ChessScore) + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
-		RegisterStatusNode.self_modulate = Color( 0, 1, 0, 1 )
+		if (UserRecords.find_user_in_db(UsernameTextNode.get_text()) == true):
+			RegistrationSummary = "Username already exists in the database"
+			RegisterStatusNode.self_modulate = Color( 1, 0, 0, 1 )
+		# Finally, if all checks out, we can display the summary and ask for confirmation before creating the database record
+		else:
+			RegistrationSummary = "A new player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + "\nFullname: " + FullnameTextNode.get_text() + "\nChess Score: " + String(ChessScore) + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
+			RegisterStatusNode.self_modulate = Color( 0, 1, 0, 1 )
+			
+			# Disappear the register button, form and chess Score container elements since input is fine
+			$FormContainer/RegistrationFormContainer.visible = false
+			$FormContainer/ChessScoreContainer/YesButtonExactScore.visible = false
+			$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = false
+			$FormContainer/ChessScoreContainer/ScoreValidator.visible = false
+			$FormContainer/RegisterButton.visible = false
 		
-		# Disappear the register button, form and chess Score container elements since input is fine
-		$FormContainer/RegistrationFormContainer.visible = false
-		$FormContainer/ChessScoreContainer/YesButtonExactScore.visible = false
-		$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = false
-		$FormContainer/ChessScoreContainer/ScoreValidator.visible = false
-		$FormContainer/RegisterButton.visible = false
-	
-		# Make YES and NO buttons visible
-		$FormContainer/RegisterConfirmContainer/UserConfirmation.visible = true
+			# Make YES and NO buttons visible
+			$FormContainer/RegisterConfirmContainer/UserConfirmation.visible = true
 	
 	RegisterStatusNode.set_text(str(RegistrationSummary))
 

@@ -71,16 +71,25 @@ func insert_new_record(tableName, Username, Fullname, Score):
 	Score + \
 	");")
 
-# A function to read the database
-func read_user_records(db):
-	pass
-	
 # A function for displaying all the user profiles in the db
-
-# A function to write user records to file
 
 
 # A function to find a user profile, this should probably be used by other functions
+# When it returns false, user not found. When user is found it returns true
+func find_user_in_db(Username):
+	db.open_db()
+	db.query("SELECT \"Username\" FROM \"HumanPlayers\" WHERE \"Username\" LIKE " + "\"" + Username + "\";")
+#	print(result)
+#	return result
+	if db.query_result == []:
+		print("User profile not found!")
+		print(db.query_result)
+		return false
+	print("User profile found!")
+	print(db.query_result)
+	return true
+	
+	db.close_db()
 
 # A function to calculate and update the user score after a match
-# If userscore is not present and total matches < 5 dont update
+
