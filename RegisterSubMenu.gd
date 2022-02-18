@@ -10,57 +10,16 @@
 
 extends WindowDialog
 
-const HIGHEST_POSSIBLE_CHESS_SCORE = 3000
-const DIFFICULTY_LEVELS = {
-	"Total Beginner" : {
-		"Commentary" : "You are trying to get into chess for the first time and have zero experience", 
-		"Range": [0, 400], 
-		"DefaultScore": 250
-		},
-	"Novice": {
-		"Commentary": "You know a bit about chess but are still a beginner", 
-		"Range": [401, 850], 
-		"DefaultScore": 600
-		},
-	"Lower Intermediate" : {
-		"Commentary": "", 
-		"Range": [851, 1200], 
-		"DefaultScore": 1000
-	},
-	"Upper Intermediate" : {
-		"Commentary": "", 
-		"Range": [1201, 1600], 
-		"DefaultScore": 1400
-	},
-	"Competent" : {
-		"Commentary": "", 
-		"Range": [1601, 2000], 
-		"DefaultScore": 1800
-	},
-	"Expert" : {
-		"Commentary": "", 
-		"Range": [2001, 2450], 
-		"DefaultScore": 2200
-	},
-	"Grandmaster" : {
-		"Commentary": "", 
-		"Range": [2451, 3000], 
-		"DefaultScore": 2800
-	}
-}
-
-# function to generate chess scores
-# TODO remove all that has to do with the difficulty levels to another file that will be loaded globally
-func generate_chess_score(key):
-	var score = DIFFICULTY_LEVELS[key]["DefaultScore"]
-	return score
-
-#******************************************************
+# ********************** VARIABLES **********************************
+# *******************************************************************
+# *******************************************************************
 var Username = ""
 var Fullname = ""
 var ChessScore = 0
 
-# Called when the node enters the scene tree for the first time.
+# ********************** READY FUNCTIONS ****************************
+# *******************************************************************
+# *******************************************************************
 func _ready():
 	$".".set_title("Register New User") # Make text "Register New User" the dialog window title
 	#show()
@@ -78,6 +37,18 @@ func _on_FullnameTextbox_ready():
 func _on_NumericScoreEntry_ready():
 	$FormContainer/ChessScoreContainer/YesButtonExactScore/NumericScoreEntry.set_max_length(4)
 
+# When the diffiulty list is ready, populate the list with difficulty levels from the Constants in the constants file [ConstantsAndDifficulty.gd]
+func _on_DifficultyList_ready():
+	var DifficultyListNode = $FormContainer/ChessScoreContainer/NoButtonEstimateScore/DifficultyList
+	for i in ConstantsAndDifficulty.DIFFICULTY_LEVELS.keys():
+		DifficultyListNode.add_item(i)
+	# TODO Add text of difficulty levels in $FormContainer/ScoreVaidator
+	
+# *******************************************************************
+# *******************************************************************
+# ACTIONS WHEN BUTTON A BUTTON IS PRESSED WHEN ASKED FOR CHESS SCORE [YES] OR [NO]
+# *******************************************************************
+# *******************************************************************
 func _on_ChessScoreYesButton_pressed():
 	# disappear the 'no' options (estimate dropdown menu) and show the 'yes' button options (exact score entry field & ScoreValidator)
 	$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = false
@@ -90,17 +61,22 @@ func _on_ChessScoreNoButton_pressed():
 	$FormContainer/ChessScoreContainer/ScoreValidator.visible = false
 	$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = true
 
+# *******************************************************************
+# *******************************************************************
+# ACTIONS WHEN CHESS SCORE IS ENTERED BY THE USER OR THE SCORE DROPDOWN IS INTERACTED WITH
+# *******************************************************************
+# *******************************************************************
 func _on_NumericScoreEntry_text_changed(new_text):
 	var ScoreValidator = $FormContainer/ChessScoreContainer/ScoreValidator
 	var feedback = ""
 	
 	# TODO implement strict int casting, don't allow any alphabet in a designated integer field
 	if (int(new_text) != 0):
-		if (int(new_text) < (HIGHEST_POSSIBLE_CHESS_SCORE + 1)):
+		if (int(new_text) < (ConstantsAndDifficulty.HIGHEST_POSSIBLE_CHESS_SCORE + 1)):
 			# chess score input is okay
 			
 			# TODO to be written to database when the 'register' button is pressed
-			ChessScore = new_text
+			ChessScore = generate_chess_score(new_text)
 			
 			# success flag, display a green status message
 			# TODO bonus, give feedback based on score (ie, nice! you seem to be an intermediate player etc.
@@ -118,18 +94,19 @@ func _on_NumericScoreEntry_text_changed(new_text):
 		ScoreValidator.self_modulate = Color( 1, 0, 0, 1 )
 		ScoreValidator.set_text(str(feedback))
 
-func _on_DifficultyList_ready():
-	var DifficultyListNode = $FormContainer/ChessScoreContainer/NoButtonEstimateScore/DifficultyList
-	for i in DIFFICULTY_LEVELS.keys():
-		DifficultyListNode.add_item(i)
-	# TODO Add text of difficulty levels in $FormContainer/ScoreVaidator
-
 # When user picks a difficulty level (meaning they're not sure about their score), generate a score
 func _on_DifficultyList_item_selected(index):
 	var DifficultyListNode = $FormContainer/ChessScoreContainer/NoButtonEstimateScore/DifficultyList
 	var SelectedDifficulty = DifficultyListNode.get_item_text(index)
 	
 	ChessScore = generate_chess_score(SelectedDifficulty)
+	# TODO correct minor bug in Difficulty Level selection. When a profile has been registered fully and the user tries to register a new profile, the difficulty level dropdown shows whatever was last selected. Need to find a way to reset this!
+	
+# *******************************************************************
+# *******************************************************************
+# ACTIONS WHEN THE REGISTER BUTTON IS PRESSED (PRESUMABLY ALL IS WELL THEN WE ADVANCE, OR ELSE, THE USER GOES BACK TO ENTER EARLIER FIELDS
+# *******************************************************************
+# *******************************************************************
 
 # When Register button is pressed,
 # ask for confirmation,
@@ -144,8 +121,7 @@ func _on_RegisterButton_pressed():
 	# first thing first, make the confirmation dialog visible
 	$FormContainer/RegisterConfirmContainer/RegistrationOutputStatus.visible = true
 	
-	# Upper bounds for text length in the textboxes are already being checked and truncated in their respective ready funcitons, 
-	# check the lower bound i.e. force the user to enter something into the text box
+	# Upper bounds for text length in the textboxes are already being checked and truncated in their respective ready funcitons, so check the lower bound i.e. force the user to enter something into the text box
 	# Also check that the ChessScore variable has been changed (ie user either entered a chess score manually, or through the dropdown list)
 	if (len(UsernameTextNode.get_text()) < 1) or (ChessScore == 0):
 		RegistrationSummary = "Please enter a Username, Full name and Chess Score"
@@ -154,7 +130,7 @@ func _on_RegisterButton_pressed():
 	# if all is fine and the user has entered a valid input
 	# TODO, check username against one already in the database
 	else:
-		RegistrationSummary = "New player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + "\nFullname: " + FullnameTextNode.get_text() + "\nChess Score: " + String(ChessScore) + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
+		RegistrationSummary = "A new player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + "\nFullname: " + FullnameTextNode.get_text() + "\nChess Score: " + String(ChessScore) + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
 		RegisterStatusNode.self_modulate = Color( 0, 1, 0, 1 )
 		
 		# Disappear the register button, form and chess Score container elements since input is fine
@@ -169,6 +145,11 @@ func _on_RegisterButton_pressed():
 	
 	RegisterStatusNode.set_text(str(RegistrationSummary))
 
+# *******************************************************************
+# *******************************************************************
+# ACTIONS AFTER REGISTER BUTTON ALLOWS US TO PROCEED, PRESS [YES] OR [NO] BUTTON TO CONFIRM OR CANCEL
+# *******************************************************************
+# *******************************************************************
 func _on_YesButton_pressed():
 	var RegisterStatusNode = $FormContainer/RegisterConfirmContainer/RegistrationOutputStatus
 	
@@ -199,6 +180,11 @@ func _on_NoButton_pressed():
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
 
+# *******************************************************************
+# *******************************************************************
+# ACTIONS WHEN USER IS REGISTERED SUCCESSFULLY, WE CAN EITHER REGISTER ANOTHER USER OR EXIT THE REGISTRATION FORM
+# *******************************************************************
+# *******************************************************************
 func _on_YesButtonAnother_pressed():
 	reset_RegisterSubMenu() # clear everything in preparation for new user registration
 
@@ -206,16 +192,28 @@ func _on_NoButtonQuit_pressed():
 	$".".hide() # press the dialog close button
 	# after hiding, the dialog box will be reset to defaults through the popup_hide() function
 
+# *******************************************************************
+# *******************************************************************
+# ACTIONS WHEN THE FORM IS EXITED (EITHER FORM THE WINDOW'S [X] BUTTON OR THE [NOBUTTONQUIT]
+# *******************************************************************
+# *******************************************************************
 func _on_RegisterSubMenu_popup_hide():
 	reset_RegisterSubMenu()
 
-# ************** SNIPPET FUNCTIONS ********************
+
+# *******************************************************************
+# *******************************************************************
+# SNIPPET/ HELPER FUNCTIONS
+# *******************************************************************
+# *******************************************************************
+
 # reusable function that clears all textboxes in the form when called
 func clear_textboxes():
 	$FormContainer/RegistrationFormContainer/UsernameTextbox.clear()
 	$FormContainer/RegistrationFormContainer/FullnameTextbox.clear()
 	$FormContainer/ChessScoreContainer/YesButtonExactScore/NumericScoreEntry.clear()
 	
+# Clear the whole form and reset its components in preparation for calling it again
 func reset_RegisterSubMenu():
 	clear_textboxes() # remove items from the menu
 	
@@ -230,3 +228,15 @@ func reset_RegisterSubMenu():
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
 
+# function to generate chess scores
+func generate_chess_score(key):
+	if key in ConstantsAndDifficulty.DIFFICULTY_LEVELS.keys():
+		var score = ConstantsAndDifficulty.DIFFICULTY_LEVELS[key]["DefaultScore"]
+		return score
+	return int(key)
+
+# *******************************************************************
+# *******************************************************************
+# END
+# *******************************************************************
+# *******************************************************************

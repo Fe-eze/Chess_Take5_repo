@@ -3,7 +3,6 @@
 [ext_resource path="res://RegisterSubMenu.gd" type="Script" id=1]
 
 [node name="RegisterSubMenu" type="WindowDialog"]
-visible = true
 margin_right = 48.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 400, 300 )
