@@ -16,6 +16,7 @@ var ValidationMessage = ""
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$VBoxContainer/ValidateButton.connect("pressed",self,"ReportListItem")
+	# TODO a value being returned here, use it for something
 
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://MainMenu.tscn")

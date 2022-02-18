@@ -7,7 +7,6 @@ var new_reg
 func _ready():
 	$VBoxContainer2/VBoxContainer/ContinueButton.grab_focus()
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -17,6 +16,7 @@ func _on_ContinueButton_pressed():
 	
 func _on_NewGameButton_pressed():
 	get_tree().change_scene("res://NewGameSubMenu.tscn")
+	# TODO a value being returned here, use it for something
 
 func _on_LoadGameButton_pressed():
 	pass
