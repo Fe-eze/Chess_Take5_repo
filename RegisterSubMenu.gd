@@ -1,18 +1,71 @@
 extends WindowDialog
 
+const HIGHEST_POSSIBLE_CHESS_SCORE = 3000
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$".".set_title("Register New User") # Make text "Register New User" the dialog window title
 	#show()
 	popup_centered() # Make the window alive and center it
 
-# validate username text length
+# limit username text length
 func _on_UsernameTextbox_ready():
 	$FormContainer/RegistrationFormContainer/UsernameTextbox.set_max_length(32)
 
-# validate full name text length
+# limit full name text length
 func _on_FullnameTextbox_ready():
 	$FormContainer/RegistrationFormContainer/FullnameTextbox.set_max_length(64)
+
+# limit chess score text length
+func _on_NumericScoreEntry_ready():
+	$FormContainer/YesButtonExactScore/NumericScoreEntry.set_max_length(4)
+
+func _on_ChessScoreYesButton_pressed():
+	# disappear the 'no' options (estimate dropdown menu) and show the 'yes' button options (exact score entry field & ScoreValidator)
+	$FormContainer/NoButtonEstimateScore.visible = false
+	$FormContainer/YesButtonExactScore.visible = true
+	$FormContainer/ScoreValidator.visible = true
+
+func _on_ChessScoreNoButton_pressed():
+	# disappear the 'yes' button options (exact score entry field) and show the 'no' options (estimate dropdown menu)
+	$FormContainer/YesButtonExactScore.visible = false
+	$FormContainer/ScoreValidator.visible = false
+	$FormContainer/NoButtonEstimateScore.visible = true
+
+func _on_NumericScoreEntry_text_changed(new_text):
+	var ScoreValidator = $FormContainer/ScoreValidator
+	var feedback = ""
+	
+	if (int(new_text) != 0):
+		if (int(new_text) < (HIGHEST_POSSIBLE_CHESS_SCORE + 1)):
+			# chess score input is okay
+			
+			# TODO add score variable, to be written to database when the 'register' button is pressed
+			
+			# success flag, display a green status message
+			# TODO bonus, give feedback based on score (ie, nice! you seem to be an intermediate player etc.
+			feedback = "Chess Score Okay!"
+			ScoreValidator.self_modulate = Color( 0, 1, 0, 1 )
+			ScoreValidator.set_text(str(feedback))
+		else:
+			# failure flag, display a red status message
+			feedback = "Chess score must be b/w 0 & 3000!"
+			ScoreValidator.self_modulate = Color( 1, 0, 0, 1 )
+			ScoreValidator.set_text(str(feedback))
+	else:
+		# failure flag, display a red status message
+		feedback = "Chess score must be an integer!"
+		ScoreValidator.self_modulate = Color( 1, 0, 0, 1 )
+		ScoreValidator.set_text(str(feedback))
+		
+# Total Beginner - Trying to get into chess for the first time
+# Novice - Knows a bit about chess but are still a beginner
+# Lower Intermediate
+# Upper Intermediate
+# Competent
+# Expert
+# Grandmaster
+
 
 # When Register button is pressed,
 # ask for confirmation,
@@ -22,6 +75,7 @@ func _on_RegisterButton_pressed():
 	var RegistrationSummary
 	var UsernameTextNode = $FormContainer/RegistrationFormContainer/UsernameTextbox
 	var FullnameTextNode = $FormContainer/RegistrationFormContainer/FullnameTextbox
+	var ChessScoreTextNode = $FormContainer/YesButtonExactScore/NumericScoreEntry
 	var RegisterStatusNode = $FormContainer/RegisterConfirmContainer/RegistrationOutputStatus
 	
 	# first thing first, make the confirmation dialog visible
@@ -30,13 +84,13 @@ func _on_RegisterButton_pressed():
 	# Upper bounds for text length in the textboxes are already being checked and truncated in their respective ready funcitons, 
 	# check the lower band ie force the user to enter something into the text box
 	if len(UsernameTextNode.get_text()) < 1:
-		RegistrationSummary = "Please enter a Username and a Full name"
+		RegistrationSummary = "Please enter a Username, Full name and Chess Score"
 		RegisterStatusNode.self_modulate = Color( 1, 0, 0, 1 )
 
 	# if all is fine and the user has entered a valid input
 	# TODO, check username against one already in the database
 	else:
-		RegistrationSummary = "New player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + "\nFullname: " + FullnameTextNode.get_text() + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
+		RegistrationSummary = "New player profile will be created. \n" + "Username: " + UsernameTextNode.get_text() + "\nFullname: " + FullnameTextNode.get_text() + "\nChess Score: " + ChessScoreTextNode.get_text() + "\nClick YES to confirm, Click NO to clear the boxes and restart the registration process"
 		RegisterStatusNode.self_modulate = Color( 0, 1, 0, 1 )
 		
 		# disappear the register button since input is fine
@@ -106,3 +160,5 @@ func reset_RegisterSubMenu():
 	# Show the registration form and the register button
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
+
+

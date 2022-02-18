@@ -11,13 +11,13 @@ var db
 var db_name = "res://Data/UserRecordsDatabase.db"
 
 func _ready():
+	db = SQLite.new()
+	db.path = db_name
 #	if does_db_exist() == false:
 #		createHumanPlayersDB()
 	commitDataToDB()
 
 func does_db_exist():
-	db = SQLite.new()
-	db.path = db_name
 	db.open_db()
 	
 	db.query("SELECT name FROM sqlite_master WHERE type='table' AND name='HumanPlayers';")
@@ -26,8 +26,6 @@ func does_db_exist():
 	
 
 func createHumanPlayersDB():
-	db = SQLite.new()
-	db.path = db_name
 	db.open_db()
 	
 	db.query("CREATE TABLE \"HumanPlayers\" ("			+\
@@ -44,8 +42,6 @@ func createHumanPlayersDB():
 	db.close_db()
 
 func commitDataToDB():
-	db = SQLite.new()
-	db.path = db_name
 	db.open_db()
 	
 	var tableName = "HumanPlayers"
