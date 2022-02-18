@@ -11,6 +11,9 @@ const DIFFICULTY_LEVELS = {
 	"Grandmaster" : ""
 }
 
+#func generate_chess_score()
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$".".set_title("Register New User") # Make text "Register New User" the dialog window title
@@ -27,22 +30,26 @@ func _on_FullnameTextbox_ready():
 
 # limit chess score text length
 func _on_NumericScoreEntry_ready():
-	$FormContainer/YesButtonExactScore/NumericScoreEntry.set_max_length(4)
+	$FormContainer/ChessScoreContainer/YesButtonExactScore/NumericScoreEntry.set_max_length(4)
+
+# TODO Disappear all text entry fields after register button is pressed
+# TODO Populate chess score for dropdown menu selection
+# TODO why does chess score btn yes or no not work for a second time registration
 
 func _on_ChessScoreYesButton_pressed():
 	# disappear the 'no' options (estimate dropdown menu) and show the 'yes' button options (exact score entry field & ScoreValidator)
-	$FormContainer/NoButtonEstimateScore.visible = false
-	$FormContainer/YesButtonExactScore.visible = true
-	$FormContainer/ScoreValidator.visible = true
+	$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = false
+	$FormContainer/ChessScoreContainer/YesButtonExactScore.visible = true
+	$FormContainer/ChessScoreContainer/ScoreValidator.visible = true
 
 func _on_ChessScoreNoButton_pressed():
 	# disappear the 'yes' button options (exact score entry field) and show the 'no' options (estimate dropdown menu)
-	$FormContainer/YesButtonExactScore.visible = false
-	$FormContainer/ScoreValidator.visible = false
-	$FormContainer/NoButtonEstimateScore.visible = true
+	$FormContainer/ChessScoreContainer/YesButtonExactScore.visible = false
+	$FormContainer/ChessScoreContainer/ScoreValidator.visible = false
+	$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = true
 
 func _on_NumericScoreEntry_text_changed(new_text):
-	var ScoreValidator = $FormContainer/ScoreValidator
+	var ScoreValidator = $FormContainer/ChessScoreContainer/ScoreValidator
 	var feedback = ""
 	
 	if (int(new_text) != 0):
@@ -68,10 +75,11 @@ func _on_NumericScoreEntry_text_changed(new_text):
 		ScoreValidator.set_text(str(feedback))
 
 func _on_DifficultyList_ready():
-	var DifficultyListNode = $FormContainer/NoButtonEstimateScore/DifficultyList
+	var DifficultyListNode = $FormContainer/ChessScoreContainer/NoButtonEstimateScore/DifficultyList
 	for i in DIFFICULTY_LEVELS.keys():
 		DifficultyListNode.add_item(i)
-	#DIFFICULTY_LEVELS.values()[i]
+	# TODO Add text of difficulty levels in $FormContainer/ScoreVaidator
+
 # When Register button is pressed,
 # ask for confirmation,
 # if yes, register the user
@@ -80,15 +88,15 @@ func _on_RegisterButton_pressed():
 	var RegistrationSummary
 	var UsernameTextNode = $FormContainer/RegistrationFormContainer/UsernameTextbox
 	var FullnameTextNode = $FormContainer/RegistrationFormContainer/FullnameTextbox
-	var ChessScoreTextNode = $FormContainer/YesButtonExactScore/NumericScoreEntry
+	var ChessScoreTextNode = $FormContainer/ChessScoreContainer/YesButtonExactScore/NumericScoreEntry
 	var RegisterStatusNode = $FormContainer/RegisterConfirmContainer/RegistrationOutputStatus
 	
 	# first thing first, make the confirmation dialog visible
 	$FormContainer/RegisterConfirmContainer/RegistrationOutputStatus.visible = true
 	
 	# Upper bounds for text length in the textboxes are already being checked and truncated in their respective ready funcitons, 
-	# check the lower band ie force the user to enter something into the text box
-	if len(UsernameTextNode.get_text()) < 1:
+	# check the lower band i.e. force the user to enter something into the text box
+	if (len(UsernameTextNode.get_text()) < 1) or (len(ChessScoreTextNode.get_text()) < 1):
 		RegistrationSummary = "Please enter a Username, Full name and Chess Score"
 		RegisterStatusNode.self_modulate = Color( 1, 0, 0, 1 )
 
@@ -115,6 +123,8 @@ func _on_YesButton_pressed():
 	
 	# Disappear the registration form and the register button
 	$FormContainer/RegistrationFormContainer.visible = false
+	$FormContainer/ChessScoreContainer/YesButtonExactScore.visible = false
+	$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = false
 	$FormContainer/RegisterButton.visible = false
 	
 	# Confirm user successfuly registered
@@ -153,11 +163,14 @@ func _on_RegisterSubMenu_popup_hide():
 func clear_textboxes():
 	$FormContainer/RegistrationFormContainer/UsernameTextbox.clear()
 	$FormContainer/RegistrationFormContainer/FullnameTextbox.clear()
+	$FormContainer/ChessScoreContainer/YesButtonExactScore/NumericScoreEntry.clear()
 	
 func reset_RegisterSubMenu():
 	clear_textboxes() # remove items from the menu
 	
 	# Hide all confirmatory elements
+	$FormContainer/ChessScoreContainer/YesButtonExactScore.visible = false
+	$FormContainer/ChessScoreContainer/NoButtonEstimateScore.visible = false
 	$FormContainer/RegisterConfirmContainer/RegistrationOutputStatus.visible = false
 	$FormContainer/RegisterConfirmContainer/UserConfirmation.visible = false 
 	$FormContainer/RegisterConfirmContainer/AnotherUser.visible = false
@@ -165,8 +178,3 @@ func reset_RegisterSubMenu():
 	# Show the registration form and the register button
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
-
-
-
-
-

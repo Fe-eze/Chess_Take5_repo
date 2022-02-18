@@ -87,7 +87,7 @@ func _on_PlayerOptions_ready():
 
 # TODO implement this
 # when player has selected a game mode, 
-# show a dropdown of available human and ai players in side by side columns
+# show a dropdown of available human and ai players in side by side columns TODO change implementation, make it a dropdown instead of a button scroll list
 # first option should be register new user (which will open up the user registration dialog
 # list should be searchable
 func _on_PlayerOptions_item_selected(index):
