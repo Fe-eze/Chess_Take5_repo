@@ -15,7 +15,7 @@ func _ready():
 	db.path = db_name
 #	if does_db_exist() == false:
 #		createHumanPlayersDB()
-	commitDataToDB()
+	#commit_human_data_to_db()
 
 func does_db_exist():
 	db.open_db()
@@ -41,7 +41,15 @@ func createHumanPlayersDB():
 
 	db.close_db()
 
-func commitDataToDB():
+func commit_human_data_to_db(Username, Fullname, Score):
+	db.open_db()
+	
+	var tableName = "HumanPlayers"
+	insert_new_record(tableName, Username, Fullname, Score)
+
+	db.close_db()
+	
+func commitTestDataToDB():
 	db.open_db()
 	
 	var tableName = "HumanPlayers"
@@ -71,14 +79,6 @@ func read_user_records(db):
 
 # A function to write user records to file
 
-# When creating a new user profile, there should be some sort of function that allows the user to select their perceived rank and uses that to generate a chess score something like 
-# Total Beginner - Trying to get into chess for the first time
-# Novice - Knows a bit about chess but are still a beginner
-# Lower Intermediate
-# Upper Intermediate
-# Competent
-# Expert
-# Grandmaster
 
 # A function to find a user profile, this should probably be used by other functions
 

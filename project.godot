@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 ConstantsAndDifficulty="*res://ConstantsAndDifficulty.gd"
+UserRecords="*res://UserRecords.gd"
 
 [display]
 

@@ -75,7 +75,7 @@ func _on_NumericScoreEntry_text_changed(new_text):
 		if (int(new_text) < (ConstantsAndDifficulty.HIGHEST_POSSIBLE_CHESS_SCORE + 1)):
 			# chess score input is okay
 			
-			# TODO to be written to database when the 'register' button is pressed
+			# To be written to database when the 'register' button is pressed
 			ChessScore = generate_chess_score(new_text)
 			
 			# success flag, display a green status message
@@ -156,7 +156,12 @@ func _on_YesButton_pressed():
 	# disappear YES and NO buttons, then ask whether you would like to register another user
 	$FormContainer/RegisterConfirmContainer/UserConfirmation.visible = false
 	
-	# TODO add to database
+	# Add to database, we only want to edit the string variables here and no where else, when we're done we will reset them
+	Username = $FormContainer/RegistrationFormContainer/UsernameTextbox.get_text()
+	Fullname = $FormContainer/RegistrationFormContainer/FullnameTextbox.get_text()
+	UserRecords.commit_human_data_to_db(Username, Fullname, String(ChessScore))
+	Username = ""
+	Fullname = ""
 	
 	# Confirm user successfuly registered
 	var RegistrationSummary = "User Registered Succesfully!\nWould you like to register another user?"
@@ -228,7 +233,7 @@ func reset_RegisterSubMenu():
 	$FormContainer/RegistrationFormContainer.visible = true
 	$FormContainer/RegisterButton.visible = true
 
-# function to generate chess scores
+# When creating a new user profile, there should be some sort of function that allows the user to select their perceived rank and uses that to generate a chess score something like. This is the function to generate chess scores
 func generate_chess_score(key):
 	if key in ConstantsAndDifficulty.DIFFICULTY_LEVELS.keys():
 		var score = ConstantsAndDifficulty.DIFFICULTY_LEVELS[key]["DefaultScore"]
