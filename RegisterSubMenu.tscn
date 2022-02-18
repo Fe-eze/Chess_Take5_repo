@@ -205,6 +205,7 @@ text = "NO"
 [connection signal="pressed" from="FormContainer/RegistrationFormContainer/ChessScoreAnswerContainer/ChessScoreNoButton" to="." method="_on_ChessScoreNoButton_pressed"]
 [connection signal="ready" from="FormContainer/ChessScoreContainer/YesButtonExactScore/NumericScoreEntry" to="." method="_on_NumericScoreEntry_ready"]
 [connection signal="text_changed" from="FormContainer/ChessScoreContainer/YesButtonExactScore/NumericScoreEntry" to="." method="_on_NumericScoreEntry_text_changed"]
+[connection signal="item_selected" from="FormContainer/ChessScoreContainer/NoButtonEstimateScore/DifficultyList" to="." method="_on_DifficultyList_item_selected"]
 [connection signal="ready" from="FormContainer/ChessScoreContainer/NoButtonEstimateScore/DifficultyList" to="." method="_on_DifficultyList_ready"]
 [connection signal="pressed" from="FormContainer/RegisterButton" to="." method="_on_RegisterButton_pressed"]
 [connection signal="pressed" from="FormContainer/RegisterConfirmContainer/UserConfirmation/YesButton" to="." method="_on_YesButton_pressed"]

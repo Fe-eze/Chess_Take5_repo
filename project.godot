@@ -14,10 +14,6 @@ config/name="Chess_Take5"
 run/main_scene="res://MainMenu.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-UserRecords="*res://UserRecords.gd"
-
 [display]
 
 window/stretch/mode="2d"
