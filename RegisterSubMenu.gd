@@ -79,8 +79,8 @@ func _on_NumericScoreEntry_text_changed(new_text):
 			ChessScore = generate_chess_score(new_text)
 			
 			# success flag, display a green status message
-			# TODO bonus, give feedback based on score (ie, nice! you seem to be an intermediate player etc.
-			feedback = "Chess Score Okay!"
+			# Give feedback based on score (ie, nice! you seem to be an intermediate player etc.
+			feedback = "Nice! Your Chess score puts you in our " + get_difficulty_range(new_text) + " range."
 			ScoreValidator.self_modulate = Color( 0, 1, 0, 1 )
 			ScoreValidator.set_text(str(feedback))
 		else:
@@ -240,6 +240,16 @@ func generate_chess_score(key):
 		return score
 	return int(key)
 
+# Parse the chess score the user has entered into a difficulty range
+func get_difficulty_range(score):
+	score = int(score) # Cast score to int because it is coming in as a string
+	var importDict = ConstantsAndDifficulty.DIFFICULTY_LEVELS
+	var DifficultyRange
+	
+	for key in importDict.keys():
+		if (score >= importDict[key]["Range"][0]) and (score <= importDict[key]["Range"][1]):
+			DifficultyRange = key
+	return DifficultyRange
 # *******************************************************************
 # *******************************************************************
 # END
