@@ -2,6 +2,10 @@ extends Control
 
 const MAX_SECONDS_IN_A_MINUTE = 60
 
+# preload the newgameconfirmation popup
+var NewGameConfirmScene = preload("res://NewGameConfirmationDialog.tscn")
+var confirm_newgame
+
 # Declare member variables here.
 # TODO create function that does player types/ player labels generation
 var PlayerTypes = ["Human", "AI"]
@@ -131,8 +135,27 @@ func _on_RegisterButton_pressed():
 	if (new_reg == null):
 		new_reg = RegisterScene.instance()
 		add_child(new_reg)
-	
 	new_reg.popup_centered()
+
+	
+# After save game is validated, a summary/ confirmation should be shown
+func _on_ValidateButton_pressed():
+	# export the new game settings
+	export_newgame_settings()
+	
+	# popup the confirmatory dialog	
+	if (confirm_newgame == null):
+		confirm_newgame = NewGameConfirmScene.instance()
+		add_child(confirm_newgame)
+	confirm_newgame.popup_centered()
+
+# HELPER FUNCTIONS
+
+func export_newgame_settings():
+	SaveGames.Player1_temp = "Fenobus"
+	SaveGames.Player2_temp = "Nachi"
+	var GameTimeInSeconds = int(TurnTime[0])*60 + int(TurnTime[1])
+	SaveGames.GameTime = [isGameTimed, GameTimeInSeconds]
 	
 # Helper function to help delete children as needed
 static func delete_children(node):
@@ -148,4 +171,3 @@ func display_database_names(Player, Database):
 		button.text = i
 		#button.connect(pressed, self, 
 		Player.add_child(button)
-

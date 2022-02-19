@@ -1,8 +1,48 @@
 extends Node
 
+# SAVE GAME DATABASE DESIGN
+
+# There is a master table called 001MasterTable that stores the constants of each game and the variables that can only have one value at a time
+#CREATE TABLE "0001MasterTable" (
+#	"ID"	INTEGER NOT NULL UNIQUE,
+#	"MatchName"	TEXT NOT NULL UNIQUE,
+#	"Player1ID"	TEXT NOT NULL,
+#	"Player2ID"	TEXT NOT NULL,
+#	"isGameTimed"	INTEGER NOT NULL COLLATE BINARY,
+#	"Time"	INTEGER NOT NULL,
+#	"isGameComplete"	INTEGER NOT NULL COLLATE BINARY,
+#	"GameCreatedDateTime"	TEXT NOT NULL,
+#	"GameLastSavedDateTime"	TEXT NOT NULL,
+#	PRIMARY KEY("ID" AUTOINCREMENT)
+#);
+
+
+# Each table is then linked to the Match table which stores a running history and commentary of every move taken in the game
+#CREATE TABLE "Match" (
+#	"ID"	INTEGER NOT NULL UNIQUE,
+#	"MoveNumber"	INTEGER NOT NULL,
+#	"PlayerMoved"	INTEGER NOT NULL COLLATE BINARY,
+#	"TileMovedFrom"	INTEGER NOT NULL,
+#	"TileMovedTo"	INTEGER NOT NULL,
+#	"Commentary"	TEXT NOT NULL,
+#	"TimeOnClockPlayer1"	INTEGER NOT NULL,
+#	"TimeOnClockPlayer2"	INTEGER NOT NULL,
+#	"isWhiteKingCheck"	INTEGER NOT NULL COLLATE BINARY,
+#	"isBlackKingCheck"	INTEGER NOT NULL COLLATE BINARY,
+#	"ArrayWhitePawnsMoved"	INTEGER NOT NULL,
+#	"ArrayBlackPawnsMoved"	INTEGER NOT NULL,
+#	PRIMARY KEY("ID" AUTOINCREMENT)
+#)
+
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 var db
 var db_name = "res://Data/SaveGameDatabase.db"
+
+var Player1_temp
+var Player2_temp
+var Player1
+var Player2
+var GameTime = [false, -1]
 
 func _ready():
 	db = SQLite.new()

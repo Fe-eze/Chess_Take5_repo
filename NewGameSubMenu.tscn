@@ -5,6 +5,7 @@
 [node name="NewGameSubMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -185,3 +186,4 @@ text = "Validate Game Settings"
 [connection signal="ready" from="VBoxContainer/PlayerOptions" to="." method="_on_PlayerOptions_ready"]
 [connection signal="ready" from="VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown" to="." method="_on_Player1SelectorDropdown_ready"]
 [connection signal="pressed" from="VBoxContainer/RegisterContainer/RegisterButton" to="." method="_on_RegisterButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ValidateButton" to="." method="_on_ValidateButton_pressed"]
