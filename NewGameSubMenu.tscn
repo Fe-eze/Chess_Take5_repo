@@ -184,6 +184,5 @@ text = "Validate Game Settings"
 [connection signal="text_changed" from="VBoxContainer/TimerSettingsContainer/HourAndMinuteSettings/SecondSetting" to="." method="_on_SecondSetting_text_changed"]
 [connection signal="item_selected" from="VBoxContainer/PlayerOptions" to="." method="_on_PlayerOptions_item_selected"]
 [connection signal="ready" from="VBoxContainer/PlayerOptions" to="." method="_on_PlayerOptions_ready"]
-[connection signal="ready" from="VBoxContainer/PlayerSelectorContainer/Player1ScrollContainer/Player1SelectorDropdown" to="." method="_on_Player1SelectorDropdown_ready"]
 [connection signal="pressed" from="VBoxContainer/RegisterContainer/RegisterButton" to="." method="_on_RegisterButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/ValidateButton" to="." method="_on_ValidateButton_pressed"]

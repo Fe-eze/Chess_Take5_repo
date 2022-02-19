@@ -6,6 +6,8 @@ const MAX_SECONDS_IN_A_MINUTE = 60
 var NewGameConfirmScene = preload("res://NewGameConfirmationDialog.tscn")
 var confirm_newgame
 
+# TODO Solve bug where this scene breaks the game when it is loaded directly. Right now it only works as a transitionary scene
+
 # Declare member variables here.
 # TODO create function that does player types/ player labels generation
 var PlayerTypes = ["Human", "AI"]
