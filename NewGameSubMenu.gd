@@ -119,7 +119,21 @@ func _on_PlayerOptions_item_selected(index):
 		display_database_names(Player2Dropdown, HumanPlayerDatabase)
 	else:
 		display_database_names(Player2Dropdown, AIPlayerDatabase)
-		
+	
+	# Also, once this is selected, make the register button visible
+	$VBoxContainer/RegisterContainer.visible = true
+
+# When register button is pressed, open the register new user popup
+func _on_RegisterButton_pressed():
+	var new_reg = ConstantsAndDifficulty.new_reg
+	var RegisterScene = ConstantsAndDifficulty.RegisterScene
+	
+	if (new_reg == null):
+		new_reg = RegisterScene.instance()
+		add_child(new_reg)
+	
+	new_reg.popup_centered()
+	
 # Helper function to help delete children as needed
 static func delete_children(node):
 	for n in node.get_children():
@@ -134,3 +148,4 @@ func display_database_names(Player, Database):
 		button.text = i
 		#button.connect(pressed, self, 
 		Player.add_child(button)
+

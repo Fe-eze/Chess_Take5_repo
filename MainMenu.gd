@@ -1,8 +1,5 @@
 extends Control
 
-var RegisterScene = preload("res://RegisterSubMenu.tscn")
-var new_reg
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$VBoxContainer2/VBoxContainer/ContinueButton.grab_focus()
@@ -25,13 +22,14 @@ func _on_LearnChessButton_pressed():
 	pass
 
 func _on_OptionsButton_pressed():
+	var new_reg = ConstantsAndDifficulty.new_reg
+	var RegisterScene = ConstantsAndDifficulty.RegisterScene
+	
 	if (new_reg == null):
 		new_reg = RegisterScene.instance()
 		add_child(new_reg)
 	
 	new_reg.popup_centered()
-	#RegisterScene.popup()
-	#get_tree().change_scene("res://RegisterSubMenu.tscn")
 
 func _on_CreditsButton_pressed():
 	pass

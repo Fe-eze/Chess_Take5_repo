@@ -1,5 +1,9 @@
 extends Node
 
+# preload the register submenu popup
+var RegisterScene = preload("res://RegisterSubMenu.tscn")
+var new_reg
+
 const HIGHEST_POSSIBLE_CHESS_SCORE = 3000
 const DIFFICULTY_LEVELS = {
 	"Total Beginner" : {
