@@ -7,8 +7,8 @@ const MAX_SECONDS_IN_A_MINUTE = 60
 var PlayerTypes = ["Human", "AI"]
 var PlayerLabels = []
 
-var HumanPlayerDatabase = ["Nachi", "Deni", "Fe-eze"] # TODO change and implement proper database
-var AIPlayerDatabase = ["Kasparovina", "Alexei", "Schultz", "Femi", "Uche"] # TODO change and implement proper database
+var HumanPlayerDatabase = UserRecords.list_all_users_in_db("HumanPlayers")
+var AIPlayerDatabase = UserRecords.list_all_users_in_db("AIPlayers")
 var isGameTimed = false
 var TurnTime = [0, 0]
 var ValidationMessage = ""
@@ -85,7 +85,6 @@ func _on_PlayerOptions_ready():
 			$VBoxContainer/PlayerOptions.add_item(PlayerTypes[i] + " v " + PlayerTypes[j],null,true) # display p1 vs p2 as text to the menu screen
 	$VBoxContainer/PlayerOptions.select(0,true)
 
-# TODO implement this
 # when player has selected a game mode, 
 # show a dropdown of available human and ai players in side by side columns TODO change implementation, make it a dropdown instead of a button scroll list
 # first option should be register new user (which will open up the user registration dialog

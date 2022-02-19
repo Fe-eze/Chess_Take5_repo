@@ -17,6 +17,58 @@ func _ready():
 #		createHumanPlayersDB()
 	#commit_human_data_to_db()
 
+func commit_human_data_to_db(Username, Fullname, Score):
+	db.open_db()
+	
+	var tableName = "HumanPlayers"
+	insert_new_record(tableName, Username, Fullname, Score)
+
+	db.close_db()
+	
+func insert_new_record(tableName, Username, Fullname, Score):
+	db.query("INSERT INTO " + \
+	tableName + \
+	"(\"Username\", \"Fullname\", \"Score\") VALUES(" + "\"" + \
+	Username + \
+	"\"" + ", " + "\"" + \
+	Fullname + "\"" + ", " + \
+	Score + \
+	");")
+
+# A function for grabbing all the profiles in a db table and listing them as an array
+func list_all_users_in_db(DatabaseTable):
+	db.open_db()
+	db.query("SELECT \"Username\" FROM \"" + DatabaseTable + "\";")
+	
+	var UsernameArray = []
+	for i in db.query_result:
+		UsernameArray.append(i["Username"])
+	
+	return UsernameArray
+	db.close_db()
+
+# A function to find a user profile, this should probably be used by other functions
+# When it returns false, user not found. When user is found it returns true
+# This is only for finding user profiles in the HumanPlayers table, if there's any need to extend this to the AIPlayers table, then it can be edited
+func find_user_in_db(Username):
+	db.open_db()
+	db.query("SELECT \"Username\" FROM \"HumanPlayers\" WHERE \"Username\" LIKE " + "\"" + Username + "\";")
+#	print(result)
+#	return result
+	if db.query_result == []:
+		return false
+	return true
+	
+	db.close_db()
+
+# A function to calculate and update the user score after a match
+
+# *******************************************************************
+# *******************************************************************
+# EX_NIHILO SECTION: FUNCTIONS BELOW ARE TO ENABLE GENERATION OF DB ON FIRST GAME RUN
+# TODO: work on these
+# *******************************************************************
+# *******************************************************************
 func does_db_exist():
 	db.open_db()
 	
@@ -24,7 +76,6 @@ func does_db_exist():
 	db.close_db()
 	return db.query_result
 	
-
 func createHumanPlayersDB():
 	db.open_db()
 	
@@ -40,14 +91,6 @@ func createHumanPlayersDB():
 	");")
 
 	db.close_db()
-
-func commit_human_data_to_db(Username, Fullname, Score):
-	db.open_db()
-	
-	var tableName = "HumanPlayers"
-	insert_new_record(tableName, Username, Fullname, Score)
-
-	db.close_db()
 	
 func commitTestDataToDB():
 	db.open_db()
@@ -60,36 +103,3 @@ func commitTestDataToDB():
 	insert_new_record(tableName, "The Pope", "Chimnachi Adeife", "700")
 	insert_new_record(tableName, "Fenobus", "Fe-eze Nobuweji", "800")
 	db.close_db()
-	
-func insert_new_record(tableName, Username, Fullname, Score):
-	db.query("INSERT INTO " + \
-	tableName + \
-	"(\"Username\", \"Fullname\", \"Score\") VALUES(" + "\"" + \
-	Username + \
-	"\"" + ", " + "\"" + \
-	Fullname + "\"" + ", " + \
-	Score + \
-	");")
-
-# A function for displaying all the user profiles in the db
-
-
-# A function to find a user profile, this should probably be used by other functions
-# When it returns false, user not found. When user is found it returns true
-func find_user_in_db(Username):
-	db.open_db()
-	db.query("SELECT \"Username\" FROM \"HumanPlayers\" WHERE \"Username\" LIKE " + "\"" + Username + "\";")
-#	print(result)
-#	return result
-	if db.query_result == []:
-		print("User profile not found!")
-		print(db.query_result)
-		return false
-	print("User profile found!")
-	print(db.query_result)
-	return true
-	
-	db.close_db()
-
-# A function to calculate and update the user score after a match
-
