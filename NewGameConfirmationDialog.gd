@@ -15,7 +15,8 @@ func _ready():
 	if SaveGames.GameTime[0] == false:
 		GameTime = "Untimed Game"
 	else:
-		GameTime = "Timed Game [" + String(SaveGames.GameTime[1]/60) + "mins per turn]"
+		print(SaveGames.GameTime)
+		GameTime = "Timed Game [" + convert_time_to_string(SaveGames.GameTime[1])[0] + "m" + convert_time_to_string(SaveGames.GameTime[1])[0] + "s per turn]"
 	
 	var SummaryText = "New Game Summary\n" +\
 	SaveGames.Player1_temp + "[PLAYER 1] vs. " + SaveGames.Player2_temp + "[PLAYER 2]\n" +\
@@ -28,3 +29,12 @@ func _ready():
 	# on YES, create new game record in the db and change scene to chessboard
 	# the new game is created and the chessboard scene is loaded with the new game settings populated in
 	# on CANCEL, go back to new game box (remove the popup)
+
+# Helper function to convert time from seconds to mm&ss for display
+func convert_time_to_string(TimeInSeconds):
+	var MinuteField:int = TimeInSeconds/60
+	var SecondField:int = TimeInSeconds%60
+	
+	var StringifiedTime = [String(MinuteField), String(SecondField)]
+	
+	return StringifiedTime

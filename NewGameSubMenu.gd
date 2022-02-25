@@ -49,7 +49,8 @@ func _on_MinuteSetting_text_changed(new_text):
 	if int(new_text) != 0:
 		# input is okay, save the mm setting
 		# success flag, display a green status message
-		TurnTime[0] = new_text
+		TurnTime[0] = int(new_text)
+		print(TurnTime[0])
 		MinuteValidation = "mm field Okay!"
 		MMVaidationLabel.self_modulate = Color( 0, 1, 0, 1 )
 		MMVaidationLabel.set_text(str(MinuteValidation))
@@ -63,11 +64,12 @@ func _on_MinuteSetting_text_changed(new_text):
 func _on_SecondSetting_text_changed(new_text):
 	var SecondValidation = ""
 	var SSVaidationLabel = $VBoxContainer/TimerSettingsContainer/SSValidationLabel #grab this to avoid needless repitition
-	if (int(new_text) != 0):
+	if (int(new_text) >= 0):
 		if (int(new_text) < MAX_SECONDS_IN_A_MINUTE):
 			# input is okay, save the ss setting
 			# success flag, display a green status message
 			TurnTime[1] = new_text
+			print(TurnTime[1])
 			SecondValidation = "ss field Okay!"
 			SSVaidationLabel.self_modulate = Color( 0, 1, 0, 1 )
 			SSVaidationLabel.set_text(str(SecondValidation))
@@ -156,8 +158,9 @@ func _on_ValidateButton_pressed():
 func export_newgame_settings():
 	SaveGames.Player1_temp = "Fenobus"
 	SaveGames.Player2_temp = "Nachi"
-	var GameTimeInSeconds = int(TurnTime[0])*60 + int(TurnTime[1])
+	var GameTimeInSeconds = convert_time_to_seconds(int(TurnTime[0]), int(TurnTime[1]))
 	SaveGames.GameTime = [isGameTimed, GameTimeInSeconds]
+	print(SaveGames.GameTime)
 	
 # Helper function to help delete children as needed
 static func delete_children(node):
@@ -173,3 +176,8 @@ func display_database_names(Player, Database):
 		button.text = i
 		#button.connect(pressed, self, 
 		Player.add_child(button)
+
+# Helper function to convert time from mm & ss to seconds
+func convert_time_to_seconds(minutes, seconds):
+	var TimeInSeconds = minutes*60 + seconds
+	return TimeInSeconds
